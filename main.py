@@ -1,7 +1,7 @@
 import discord
 
 with open("TOKEN.txt") as file:
-    TOKEN = file.read
+    TOKEN = file.read()
 intents = discord.Intents.default()
 intents.message_content = True
 
