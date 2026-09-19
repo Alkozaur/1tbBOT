@@ -7,9 +7,8 @@ from urllib.parse import urljoin
 CHANNEL_ID = 1543887723763339346
 
 async def send_announcement(element, post_id):
-    #link = element.find("div").find("a").get("href")
-    #print(link)
-    #response = requests.get(link, headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"})
+    link = element.find("div").find("a").get("href")
+    #response = requests.get(link)
     #soup = BeautifulSoup(response.text, "html.parser")
     #text_element = soup.find(id=post_id).find("div").find("div")
     
@@ -18,7 +17,7 @@ async def send_announcement(element, post_id):
     
 @tasks.loop(minutes=1)
 async def call_tm1():
-    response = requests.get("https://tm1.edu.pl", headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"})
+    response = requests.get("https://tm1.edu.pl")
     soup = BeautifulSoup(response.text, "html.parser")
     element = soup.find(id="ajax-content").find("article")
     post_id = element.get("id")
