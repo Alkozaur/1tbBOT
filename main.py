@@ -3,10 +3,12 @@ import discord
 from discord.ext import commands, tasks
 from bs4 import BeautifulSoup
 
-with open("CHANNEL.txt", 'r') as file:
-    CHANNEL_ID = file.read()
+with open("CHANNEL.txt", 'r', encoding='utf-8') as file:
+    CHANNEL_ID = int(file.read())
 
-with open("TOKEN.txt", "r") as file:
+
+
+with open("TOKEN.txt", "r", encoding='utf-8') as file:
     TOKEN = file.read()
 
 intents = discord.Intents.default()
@@ -16,9 +18,9 @@ client = commands.Bot(command_prefix="!", intents=intents)
 
 async def send_announcement(element, post_id):
     link = element.find("div").find("a").get("href")
-    
+
     channel = client.get_channel(CHANNEL_ID)
-    await channel.send(f"@everyone Pojawiło się nowe ogłoszenie na stronie szkoły!\n{link}")
+    await channel.send(f"@everyone Pojawiło się nowe ogłoszenie na stronie szkoły!\n{link}",)
     
 
 @tasks.loop(minutes=1)
@@ -29,16 +31,26 @@ async def call_tm1():
     post_id = element.get("id")
 
 
-    with open("last_post.txt", "w") as file:
+    with open("last_post.txt", "r+", encoding='utf-8') as file:
         try:
-            if post_id == file.read():
-                print("Nothin's changed!")
-            else:
-                print("Change detected!")
-                file.write(post_id)
-                await send_announcement(element, post_id)
+            file_content = file.read()
         except Exception:
+                print("Something went wrong!")
+                file.seek(0)
+                file.write(post_id)
+                file.truncate()
+
+                file_content = None
+        if post_id == file_content:
+            print("Nothin's changed!")
+        else:
+            print("Change detected!")
+
+            file.seek(0)
             file.write(post_id)
+            file.truncate()
+
+            await send_announcement(element, post_id)
 
 
 @client.event
