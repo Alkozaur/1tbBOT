@@ -32,8 +32,9 @@ async def call_tm1():
     with open("last_post.txt", "w") as file:
         try:
             if post_id == file.read():
-                return
+                print("Nothin's changed!")
             else:
+                print("Change detected!")
                 file.write(post_id)
                 await send_announcement(element, post_id)
         except Exception:
