@@ -3,5 +3,5 @@ Bot na serwer discord klasy 1tb
 
 
 ## Ojcowie założyciele:
-* Aleksnder Woński(Alkozaur)
+* Aleksnder Wroński(Alkozaur)
 * Henryk Dembiński(HeniekPolishMF)
